@@ -163,5 +163,25 @@ It created output at public/build/ with a index.html file.
 Sadly, the alias makes Calva more confusing, because Calva asks me if I want to connect to the new alias when creating the REPL.
 The answer is no, you do not want Calva to use that alias, because you do not need to build the HTML when you connect Calva.
 
+#### Future Clerk
+
+Maybe I can get the HTML file deployed to GitHub pages.
+There are some notes about using GitHub Actions for this:
+
+* https://github.com/zachcp/ghclerk
+* https://github.com/mathisto/clerkbooks_clj
+
+Clerk also hosts a "Garden" at https://github.clerk.garden/
+
+A few people have done Advent of Code with Clerk
+
+* https://github.com/emlyn/advent-of-clerk
+* https://github.com/formsandlines/aoc2022-clojure
+
+And the root repo has perhaps a better build fn
+
+* https://github.com/nextjournal/advent-of-clerk
+
+
 
 
