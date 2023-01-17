@@ -146,5 +146,22 @@ I skipped this for now:
 ```
 * Start your preferred editor and REPL.  I am using VS Code with the "Calva" extension.
   * Connect your REPL and evaluate the core.clj file.
-  
+
+### Clojure Summary
+
+It took me a lot of experimentation to figure out how the dataset (dataframe) library worked, and to figure out how to use Plotly with Clerk.
+
+
+#### A few more steps
+
+I see clues that it is possible to save a Clerk notebook to a HTML file.
+
+I copied code from the "clerk-demo" deps.edn, gave it an alias name of `:build-static`, and built with `clojure -M:build-static`
+
+It created output at public/build/ with a index.html file.
+
+Sadly, the alias makes Calva more confusing, because Calva asks me if I want to connect to the new alias when creating the REPL.
+The answer is no, you do not want Calva to use that alias, because you do not need to build the HTML when you connect Calva.
+
+
 
