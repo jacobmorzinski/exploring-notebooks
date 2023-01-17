@@ -30,3 +30,36 @@ At [21m38s in the video "F# as a Better Python"](https://www.youtube.com/watch?v
 
 Overall, the notebook worked, and was sucessfully able to save data in a dataframe and visualze the data.
 
+## Python
+
+It seems fair to compare with classic IPython, using Jupyter and Pandas.
+
+### Steps
+
+* Create a virtualenv by running `python -m venv venv`
+  * `-m venv` loads the module "venv"
+  * the next `venv` is the name of the folder where the virtualenv wil be stored
+* Activate the venv
+  * On Windows, the command is:  
+    `. .\venv\Scripts\Activate.ps1`
+* Prepare a "requirements.txt" file with desired packages:
+```
+jupyter
+pandas
+numpy
+plotly
+```
+* In the activated venv, use `pip install -r requirements.txt` to install the packages.
+  * It may take a while to download and/or build the packages.
+* When installations are done, you can create a ipynb file in VS Code.
+  * I used the Palette command `Create: New Jupyter Notebook`
+  * Give it a name and save it.
+  * Click the corner menu to try to choose the Python environment - choose the new "venv" that you created.
+  * VS Code did not find my "venv", I had to quit and re-open VS Code from insde the venv in order for it to find the venv.
+* Once VS Code can connect to the IPython kernel in your venv, you can start making your notebook.
+
+### Python Summary
+
+I know python better than I know F#, and I was more comfortable with the Python process.  I did struggle with installing packages - one of the binary packages compiles itself with Rust, and failed to compile until I noticed the error message and upgraded my Rust compiler version.
+
+
