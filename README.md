@@ -62,4 +62,89 @@ plotly
 
 I know python better than I know F#, and I was more comfortable with the Python process.  I did struggle with installing packages - one of the binary packages compiles itself with Rust, and failed to compile until I noticed the error message and upgraded my Rust compiler version.
 
+## Clojure
+
+Doing the same task using Clojure was a rough adventure.  I have seen Clojure fans say that they wish more Clojure was used for data science, but I had challenges:
+
+* Finding the right libraries was a challenge.
+* Learning how to use them was a challenge.
+
+In the end I did find some good libraries, but learning how to combine the pieces took hours of work.
+
+
+### Reference dump:
+
+This talk about Clojure data science has a slide at 5m9s that recommends Clojure library equivalents of python or R libraries:
+
+https://www.youtube.com/watch?v=BxVtQM6FPHU&t=309s
+
+It also links to a a "library resources" page at [Scicloj](https://scicloj.github.io/), a community promoting the use of Clojure for data-centric computing:
+
+https://scicloj.github.io/docs/resources/libs/
+
+I took note that two options listed at Calva Notebooks and Clerk
+
+* Calva Notebooks
+  * https://calva.io/notebooks/
+* Clerk
+  * https://github.com/nextjournal/clerk
+
+### Clojure quick start
+
+Starting a new Clojure project is still intimidating because you need to have the right files in the right place.  Here are some notes:
+
+https://gist.github.com/Saikyun/7c3da5584145cbb0667058017cd4d667
+
+
+### Calva Notebook
+
+The Calva Notebook page has prominent warnings that Calva Notebooks are new, experimental, and may lose data.
+
+The Calva command to "open as notebook" did not work well for me - it did not find my repl.  Maybe I did something wrong, but I decided to try Clerk.
+
+### Clerk
+
+[Clerk](https://clerk.vision/) \(https://clerk.vision/) is a bit of a different way of doing things.  Instead of evaluating your file a cell at a time, Clerk evaluates every expression (every clojure "form") in the file, and shows the results in a browser (or you can save it to a static file).  The behavior that it can re-run the whole file took me a while to learn.  Think about what this means if some of your commands are slow, or take actions like downloading a file.
+
+There are some subtleties - Clerk uses a cache to reduce the number of times that it needs to re-run each statement.  If the statment's result is already cached, Clerk will not re-run the statment.
+
+More details about using Clerk are in the [Book of Clerk](https://book.clerk.vision/) \(https://book.clerk.vision/)
+
+#### Clojure Data Frames (Dataset)
+
+The Scicloj group pointed to a new library: "dataset"
+
+https://github.com/techascent/tech.ml.dataset
+
+It looks quite nice and powerful.  However, it was a stuggle for me to remember enough Clojure to figure how to select and reshape data.  This is a case where being unfamiliar with a language slowed me down.
+
+I found these pages when I was trying to figure out how to do things:
+* https://github.com/genmeblog/techtest/wiki/Summary-of-functions
+* https://github.com/genmeblog/techtest/blob/master/src/techtest/datatable_dplyr.clj
+* https://techascent.github.io/tech.ml.dataset/walkthrough.html
+
+I skipped this for now:
+* https://github.com/scicloj/tablecloth
+
+
+### Clojure Steps
+
+* create a file "deps.edn"
+* add content to the "deps.edn" - telling it that code is in "src", and that you depend on libraries and need them downloaded.
+```clojure
+{:paths ["src"]
+ :deps {io.github.nextjournal/clerk {:mvn/version "0.12.707"}
+        techascent/tech.ml.dataset {:mvn/version "7.000-beta-18"}}}
+```
+* Create a folder "src" and a subfolder "clojure_datavis"
+* Create a file src/clojure_datavis/core.clj
+* Add a namespace to the core.clj file.  Note that the namespace uses a dash "-" in the place where the folder uses an underscore "_".
+```clojure
+(ns clojure-datavis.core
+  (:require [nextjournal.clerk :as clerk]
+            [tech.v3.dataset :as ds]))
+```
+* Start your preferred editor and REPL.  I am using VS Code with the "Calva" extension.
+  * Connect your REPL and evaluate the core.clj file.
+  
 
