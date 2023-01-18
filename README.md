@@ -23,8 +23,10 @@ At [21m38s in the video "F# as a Better Python"](https://www.youtube.com/watch?v
 * The rest of the process generally involved following the video.
 * Remember that you can press Shift-Return or Control-Return to evaluate the active notebook cell.
 * Some first thoughts: there are some rough spots.
-  * I was surprised at how slow the main data processing loop is.  I suspect the code is doing un-needed work, but for the first steps I am keeping it the same as the demo video.
-  * I also noticed that the final Plotly chart has poor tooltips on mouseover.  Again, for now I am keeping it the same as the demo video.
+  * I was surprised at how slow the main data processing loop is.  I suspect the code is doing un-needed work.  I modified the code a bit to try to speed up the loop.
+  * The DataFrame library is relatively new:
+    * https://learn.microsoft.com/en-us/dotnet/api/microsoft.data.analysis.dataframe
+  
 
 ### F# Summary
 

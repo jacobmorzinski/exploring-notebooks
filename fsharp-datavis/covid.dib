@@ -56,40 +56,43 @@ let deaths = DataFrame.LoadCsv("Deaths.csv")
 let confirmed = DataFrame.LoadCsv("Confirmed.csv")
 let recovered = DataFrame.LoadCsv("Recovered.csv")
 
-let displayedValue = display("Processing data")
+#!fsharp
 
+// Reshape the data
+// Original data has many date columns.
+// For each date, find cells with non-zero values,
+// and get the lat/long (and value)
+
+let displayedValue = display("Processing data")
 let offset = 4
 let series = ResizeArray<_>()
 
 for i = offset to deaths.Columns.Count - 1 do
     let date = deaths.Columns.[i].Name
-    let deathsFiltered = deaths.[deaths.Columns.[i].ElementwiseNotEquals(0)]
-    let confirmedFiltered = deaths.[confirmed.Columns.[i].ElementwiseNotEquals(0)]
-    let recoveredFiltered = recovered.[recovered.Columns.[i].ElementwiseNotEquals(0)]
+
+    let deathsNarrowed = DataFrame(deaths.Columns.["Lat"], deaths.Columns.["Long"], deaths.Columns.[date])
+    let deathsBool = deathsNarrowed.Columns.[date].ElementwiseNotEquals(0)
+    let deathsFiltered = deathsNarrowed.[deathsBool]
+
+    let confirmedNarrowed = DataFrame(confirmed.Columns.["Lat"], confirmed.Columns.["Long"], confirmed.Columns.[date])
+    let confirmedBool = confirmedNarrowed.Columns.[date].ElementwiseNotEquals(0)
+    let confirmedFiltered = deathsNarrowed.[confirmedBool]
+
+    let recoveredNarrowed = DataFrame(recovered.Columns.["Lat"], recovered.Columns.["Long"], recovered.Columns.[date])
+    let recoveredBool = recoveredNarrowed.Columns.[date].ElementwiseNotEquals(0)
+    let recoveredFiltered = recoveredNarrowed.[recoveredBool]
 
     displayedValue.Update(sprintf "processing %s" date)
 
-    let data =
+    let data : struct {|Date:string;
+                        DeathSeries:DataFrame
+                        ConfirmedSeries:DataFrame;
+                        RecoveredSeries:DataFrame|} =
         {|
             Date = date
-            DeathSeries =
-                {|
-                    Latitude = deathsFiltered.["Lat"]
-                    Longitude = deathsFiltered.["Long"]
-                    Data = deathsFiltered.Columns.[i]
-                |}
-            ConfirmedSeries =
-                {|
-                    Latitude = confirmedFiltered.["Lat"]
-                    Longitude = confirmedFiltered.["Long"]
-                    Data = confirmedFiltered.Columns.[i]
-                |}
-            RecoveredSeries =
-                {|
-                    Latitude = recoveredFiltered.["Lat"]
-                    Longitude = recoveredFiltered.["Long"]
-                    Data = recoveredFiltered.Columns.[i]
-                |}
+            DeathSeries = deathsFiltered
+            ConfirmedSeries = confirmedFiltered
+            RecoveredSeries = recoveredFiltered
         |}
 
     series.Add(data)
@@ -104,6 +107,18 @@ displayedValue.Update("Done!")
 open XPlot.Plotly
 
 #!fsharp
+
+series.[2].Date
+
+#!fsharp
+
+series.[2].RecoveredSeries
+
+#!fsharp
+
+let selected = 120
+let date = series.[selected].Date
+let plot_series = series.[selected].RecoveredSeries
 
 let layout date =
     Layout(
@@ -123,11 +138,10 @@ let confirmedTrace =
         name = "Confirmed",
         mode = "markers",
         geo = "geo",
-        lat = series.[120].RecoveredSeries.Latitude,
-        lon = series.[120].RecoveredSeries.Longitude,
-        text = series.[120].RecoveredSeries.Data.ToString(),
+        lat = plot_series.["Lat"],
+        lon = plot_series.["Long"],
         marker = Marker(symbol = "diamond", color = "#DC7633"))
 
 confirmedTrace
 |> Chart.Plot
-|> Chart.WithLayout (layout series.[120].Date)
+|> Chart.WithLayout (layout date)
